@@ -43,20 +43,13 @@ stdenv.mkDerivation rec {
   pname = "grub";
   inherit version;
 
-  src = fetchurl {
-    url = "mirror://gnu/grub/${pname}-${version}.tar.xz";
-    sha256 = "03vvdfhdmf16121v7xs8is2krwnv15wpkhkf16a4yf8nsfc3f2w1";
+  src = fetchgit {
+    url = "git://git.savannah.gnu.org/grub.git";
+    rev = "598de14d9340137cd7c7a099e8ed53d97f1f68a0";
   };
 
   patches = [
     ./fix-bash-completion.patch
-    # This patch makes grub compatible with the XFS sparse inode
-    # feature introduced by xfsprogs-4.16.
-    # to be removed in grub-2.03
-    (fetchpatch {
-      url = https://git.savannah.gnu.org/cgit/grub.git/patch/?id=cda0a857dd7a27cd5d621747464bfe71e8727fff;
-      sha256 = "0k9qrkdxwdqk6sz05q9smqwjr6pvgc9adx1mlf0807g4im91xnm0";
-    })
     ./relocation-not-implemented.diff
   ];
   postPatch = ''
